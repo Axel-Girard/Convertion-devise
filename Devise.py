@@ -39,7 +39,7 @@ for ligne in strip:
             try:
                 # verification que le taux est un chiffre
                 taux = float(val[2].rstrip())
-                # ajout dans le graph de la ligne
+                # ajout dans le graph de la liaison directionnelle dans les deux sens
                 graph.add_edge(val[0], val[1], weight=taux)
                 graph.add_edge(val[1], val[0], weight=1/taux)
             except ValueError:
@@ -54,8 +54,10 @@ else:
         print ('Il n\'y a pas de convertion pour ses devises.')
     else:
         try:
+            # utilisation de l'algorithme de dijkstra pour trouver le plus court chemin d'un graph
             nodes = nx.dijkstra_path(graph,"EUR","USD")
             for cptNodes in range(len(nodes) -1):
+                # calcul du montant pour chaque liaison
                 taux = float(graph[nodes[cptNodes]][nodes[cptNodes + 1]]['weight'])
                 montant = montant * taux
             print('%.2f' % montant)
